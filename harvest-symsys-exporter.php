@@ -10,4 +10,5 @@ $sheet->removeColumns(array(
 	'Billable Amount', 'Cost Rate', 'Cost Amount', 'Currency'
 ));
 $sheet->splitColumn('B', 'Client Code');
-$sheet->output();
+$sheet->capColumn('Notes', 50);
+$sheet->output(HarvestSheet::OUTPUT_TYPE_CSV);
