@@ -59,10 +59,66 @@ class HarvestSheet {
 		throw new Exception(self::ERROR_NO_VALID_OUTPUT_TYPE);
 	}
 
-	public function splitColumn($srcColumn, $destName) {
-		$this->_setDestinationColumnName($destName);
+	public function getNumberOfContentRows() {
+		return count($this->_getColumnContent('A'));
+	}
 
-		$oldSrcContent = $this->_getColumnContent($srcColumn);
+	public function insertColumn($columnHeader, array $values) {
+		$this->_setDestinationColumnName($columnHeader);
+		$column = $this->_makeColumn($values);
+
+		//var_dump($this->_destColumn);
+		//exit;
+		$this->_getSheet()->fromArray(
+			$column,
+			null,
+			$this->_destColumn . self::FIRST_CONTENT_ROW
+		);
+
+		$this->_updateSheet();
+	}
+
+	public function getColumnValues($columnHeader) {
+		$columnIndex = $this->_getHeaderColumn($columnHeader);
+		return $this->_getColumnContent($columnIndex);
+	}
+
+	public function getConcatColumnValues(array $columnHeaders, $separator = '') {
+		$combinedValues = array_fill(0, $this->getNumberOfContentRows(), null);
+
+		foreach ($columnHeaders as $columnHeader) {
+			$columnIndex = $this->_getHeaderColumn($columnHeader);
+			$values = $this->_getColumnContent($columnIndex);
+
+			array_walk(
+				$combinedValues,
+				array($this, '_concatArrayValues'),
+				array($separator, $values)
+			);
+		}
+
+		return $combinedValues;
+	}
+
+	/**
+ 	 * Concats different arrays of the same length.
+ 	 * Writes them back to the first argument, which is practical for array_walk().
+ 	 */
+	protected function _concatArrayValues(&$combinedValue, $key, array $separatorAndToCombineValues) {
+		list($separator, $toCombineValues) = $separatorAndToCombineValues;
+		$combinedValue = implode(
+			$separator,
+			array($combinedValue, $toCombineValues[$key])
+		);
+		
+		$combinedValue = trim($combinedValue, $separator);
+	}
+
+	public function splitColumn($srcColumnHeader, $destHeader) {
+		$srcColumnIndex = $this->_getHeaderColumn($srcColumnHeader);
+		$this->_setDestinationColumnName($destHeader);
+
+		$oldSrcContent = $this->_getColumnContent($srcColumnIndex);
 		$newSrcContent = array_map(array($this, '_stripNumber'), $oldSrcContent);
 		$newDestContent = array_map(array($this, '_extractNumber'), $oldSrcContent);
 		$newSrcColumn = $this->_makeColumn($newSrcContent);
@@ -71,13 +127,41 @@ class HarvestSheet {
 		$this->_getSheet()->fromArray(
 			$newSrcColumn,
 			null,
-			$srcColumn . self::FIRST_CONTENT_ROW	
+			$srcColumnIndex . self::FIRST_CONTENT_ROW	
 		);
 
 		$this->_getSheet()->fromArray(
 			$newDestColumn,
 			null,
 			$this->_destColumn . self::FIRST_CONTENT_ROW
+		);
+
+		$this->_updateSheet();
+	}
+
+	/**
+ 	 * Replace a given string by another in the values of a specific column.
+ 	 *
+ 	 * @param	String	$columnHeader	The text label this column has.
+ 	 * @param	String	$search			The string to search for.
+ 	 * @param	String	$replace		The string to replace it by.
+ 	 */
+	public function replaceColumnString($columnHeader, $search, $replace) {
+		$columnIndex = $this->_getHeaderColumn($columnHeader);
+		$columnContent = $this->_getColumnContent($columnIndex);
+
+		$cap = function(&$value, $key, array $searchAndReplace) {
+			$value = str_replace(
+				$searchAndReplace[0], $searchAndReplace[1], $value
+			);
+		};
+
+		array_walk($columnContent, $cap, array($search, $replace));
+
+		$this->_getSheet()->fromArray(
+			$this->_makeColumn($columnContent),
+			null,
+			$columnIndex . self::FIRST_CONTENT_ROW
 		);
 
 		$this->_updateSheet();
