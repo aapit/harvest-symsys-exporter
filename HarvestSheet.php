@@ -5,8 +5,14 @@ require 'PHPExcel/Classes/PHPExcel.php';
 class HarvestSheet {
 	const ERROR_NO_FILE =
 		'Please provide a filename for the source, as first parameter.';
+	const ERROR_NO_VALID_OUTPUT_TYPE =
+		'Please provide a valid output type for the output.';
 	const HEADER_ROW = 1;
 	const FIRST_CONTENT_ROW = 2;
+	const OUTPUT_TYPE_XLS = 'xls';
+	const OUTPUT_TYPE_CSV = 'csv';
+	const INPUT_TYPE_XLSX = 'xlsx';
+	const DATE_FORMAT = 'dd-mm-yyyy';
 
 
 	protected $_dateColumnLabels = array('Date');
@@ -33,13 +39,24 @@ class HarvestSheet {
 		$this->_updateSheet();
 	}
 
-	public function output() {
-		$objWriter = new PHPExcel_Writer_Excel5($this->_excelDoc);
-		$objWriter->save(
+	public function output($type) {
+		$path = 
 			dirname($this->_path) . DIRECTORY_SEPARATOR
-			. basename($this->_path, '.xlsx')
-			. '.xls'
-		);
+			. basename($this->_path, '.' . self::INPUT_TYPE_XLSX)
+		;
+
+		switch ($type) {
+			case self::OUTPUT_TYPE_XLS:
+				$objWriter = new PHPExcel_Writer_Excel5($this->_excelDoc);
+				$extension = '.' . self::OUTPUT_TYPE_XLS;
+				return $objWriter->save($path . $extension);
+			case self::OUTPUT_TYPE_CSV:
+				$objWriter = PHPExcel_IOFactory::createWriter($this->_excelDoc, 'CSV');
+				$extension = '.' . self::OUTPUT_TYPE_CSV;
+				return $objWriter->save($path . $extension);
+		}
+
+		throw new Exception(self::ERROR_NO_VALID_OUTPUT_TYPE);
 	}
 
 	public function splitColumn($srcColumn, $destName) {
@@ -61,6 +78,31 @@ class HarvestSheet {
 			$newDestColumn,
 			null,
 			$this->_destColumn . self::FIRST_CONTENT_ROW
+		);
+
+		$this->_updateSheet();
+	}
+
+	/**
+ 	 * Limit the length of column values.
+ 	 *
+ 	 * @param	String	$columnHeader	The text label this column has.
+ 	 * @param	Int		$limit			The number of characters to limit to.
+ 	 */
+	public function capColumn($columnHeader, $limit) {
+		$columnIndex = $this->_getHeaderColumn($columnHeader);
+		$columnContent = $this->_getColumnContent($columnIndex);
+
+		$cap = function(&$value, $key, $limit) {
+			$value = substr($value, 0, $limit);
+		};
+
+		array_walk($columnContent, $cap, $limit);
+
+		$this->_getSheet()->fromArray(
+			$this->_makeColumn($columnContent),
+			null,
+			$columnIndex . self::FIRST_CONTENT_ROW
 		);
 
 		$this->_updateSheet();
@@ -113,7 +155,7 @@ class HarvestSheet {
 				$this->_getColumnContentCoordinates($column)
 			)
     		->getNumberFormat()
-			->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_YYYYMMDD)
+			->setFormatCode(self::DATE_FORMAT)
 		;
 
 		/*
