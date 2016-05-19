@@ -5,7 +5,7 @@ require 'Harvest/Transformation.php';
 date_default_timezone_set('Europe/Amsterdam');
 
 
-$employeeNumbers = array(
+$employeeNumberMap = array(
 	100 => 'Mattijs Bliek',
 	102 => 'Jelmer Boomsma',
 	103 => 'Josephine Cambier',
@@ -24,6 +24,24 @@ $employeeNumbers = array(
 	120 => 'Jean Bohm'
 );
 
+$taskCodeMap = array(
+	90 => 'Administratief',
+	105 => 'Art direction',
+	100 => 'Concept (FO/TO/COPY)',
+	113 => 'Design interactief',
+	115 => 'Design visueel',
+	112 => 'Development Back end',
+	111 => 'Development Front end',
+	311 => 'DTP',
+	92 => 'Hosting/server/devops',
+	93 => 'Offerte inschatten',
+	94 => 'Planning',
+	15 => 'Project management',
+	43 => 'Strategie en Consultancy',
+	95 => 'Testing',
+	96 => 'Tools (proces en workflow)'
+);
+
 $path = $argv[1];
 $sheet = new HarvestSheet($path);
 
@@ -34,7 +52,14 @@ $projectCodes = $sheet->getColumnValues('Project Code');
 $employeeNames = $sheet->getConcatColumnValues(array('First Name', 'Last Name'), ' ');
 $employeeNumberRows = array();
 foreach ($employeeNames as $employeeName) {
-	$employeeNumberRows[] = array_search($employeeName, $employeeNumbers);
+	$employeeNumberRows[] = array_search($employeeName, $employeeNumberMap);
+}
+
+// Find work codes by textual Task category
+$taskDescriptions = $sheet->getColumnValues('Task');
+$taskCodeRows = array();
+foreach ($taskDescriptions as $taskDescription) {
+	$taskCodeRows[] = array_search($taskDescription, $taskCodeMap);
 }
 
 //$sheet->splitColumn('Client', 'Client Code');
@@ -51,13 +76,15 @@ $transformation->addCombinedColumn('Code', array(
 	// First digit is always 1, for Grrr
 	array_fill(0, $numberOfContentRows, '1'),
 	$employeeNumberRows,
-	$projectCodes
+	$projectCodes,
+	$taskCodeRows
 ));
 
 $sheet->removeColumns(array(
 	'Billable?', 'Invoiced?', 'Approved?', 'Employee?', 'Billable Rate',
 	'Billable Amount', 'Cost Rate', 'Cost Amount', 'Currency',
-	'First Name', 'Last Name', 'Project Code', 'Department'
+	'First Name', 'Last Name', 'Project Code', 'Department',
+	'Task'
 ));
 
 // Output as CSV.
