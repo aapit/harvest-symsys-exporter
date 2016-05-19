@@ -1,6 +1,7 @@
 <?php
 
-require 'PHPExcel/Classes/PHPExcel.php';
+//require 'PHPExcel/Classes/PHPExcel.php';
+require 'vendor/autoload.php';
 
 class HarvestSheet {
 	const ERROR_NO_FILE =
@@ -36,7 +37,7 @@ class HarvestSheet {
 		$this->_excelDoc = $this->_openFile();
 
 		$this->_formatDateColumns();
-		$this->_updateSheet();
+		$this->_initSheet();
 	}
 
 	public function output($type) {
@@ -67,15 +68,13 @@ class HarvestSheet {
 		$this->_setDestinationColumnName($columnHeader);
 		$column = $this->_makeColumn($values);
 
-		//var_dump($this->_destColumn);
-		//exit;
 		$this->_getSheet()->fromArray(
 			$column,
 			null,
 			$this->_destColumn . self::FIRST_CONTENT_ROW
 		);
 
-		$this->_updateSheet();
+		$this->_increaseDestColumn();
 	}
 
 	public function getColumnValues($columnHeader) {
@@ -100,19 +99,6 @@ class HarvestSheet {
 		return $combinedValues;
 	}
 
-	/**
- 	 * Concats different arrays of the same length.
- 	 * Writes them back to the first argument, which is practical for array_walk().
- 	 */
-	protected function _concatArrayValues(&$combinedValue, $key, array $separatorAndToCombineValues) {
-		list($separator, $toCombineValues) = $separatorAndToCombineValues;
-		$combinedValue = implode(
-			$separator,
-			array($combinedValue, $toCombineValues[$key])
-		);
-		
-		$combinedValue = trim($combinedValue, $separator);
-	}
 
 	public function splitColumn($srcColumnHeader, $destHeader) {
 		$srcColumnIndex = $this->_getHeaderColumn($srcColumnHeader);
@@ -136,7 +122,7 @@ class HarvestSheet {
 			$this->_destColumn . self::FIRST_CONTENT_ROW
 		);
 
-		$this->_updateSheet();
+		$this->_increaseDestColumn;
 	}
 
 	/**
@@ -163,8 +149,6 @@ class HarvestSheet {
 			null,
 			$columnIndex . self::FIRST_CONTENT_ROW
 		);
-
-		$this->_updateSheet();
 	}
 
 	/**
@@ -188,8 +172,6 @@ class HarvestSheet {
 			null,
 			$columnIndex . self::FIRST_CONTENT_ROW
 		);
-
-		$this->_updateSheet();
 	}
 
 	public function removeColumns(array $columnLabels) {
@@ -198,10 +180,39 @@ class HarvestSheet {
 			$this->_getSheet()->removeColumn($column, 1);
 		}
 
-		$this->_updateSheet();
+		$this->_decreaseDestColumn(count($columnLabels));
 	}
 
-	protected function _updateSheet() {
+	protected function _increaseDestColumn() {
+		$columnIndex = ord($this->_destColumn);
+		$this->_destColumn = chr(++$columnIndex);
+	}
+
+	protected function _decreaseDestColumn($columns = 1) {
+		$columnIndex = ord($this->_destColumn);
+		$this->_destColumn = chr($columnIndex -= $columns);
+	}
+
+	/**
+ 	 * Concats different arrays of the same length.
+ 	 * Writes them back to the first argument, which is practical for array_walk().
+ 	 */
+	protected function _concatArrayValues(&$combinedValue, $key, array $separatorAndToCombineValues) {
+		list($separator, $toCombineValues) = $separatorAndToCombineValues;
+		$combinedValue = implode(
+			$separator,
+			array($combinedValue, $toCombineValues[$key])
+		);
+
+		$combinedValue = trim($combinedValue, $separator);
+	}
+
+	protected function _initSheet() {
+		//$this->_getSheet()->refreshColumnDimensions();
+		//$this->_getSheet()->refreshRowDimensions();
+		//$this->_getSheet()->updateCacheData();
+		//PHPExcel_Calculation::getInstance()->clearCalculationCache();
+		//$this->_destColumn = chr(ord($this->_getSheet()->getHighestDataColumn()));
 		$this->_destColumn = chr(ord($this->_getSheet()->getHighestColumn()));
 	}
 

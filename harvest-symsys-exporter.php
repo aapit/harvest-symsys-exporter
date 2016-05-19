@@ -71,6 +71,7 @@ $sheet->capColumn('Notes', 50);
 $sheet->replaceColumnString('Hours', '.', ',');
 
 // Now combine the column with a couple of dynamic values.
+/*
 $transformation = new HarvestTransformation($sheet);
 $transformation->addCombinedColumn('Code', array(
 	// First digit is always 1, for Grrr
@@ -79,12 +80,17 @@ $transformation->addCombinedColumn('Code', array(
 	$projectCodes,
 	$taskCodeRows
 ));
+*/
+$sheet->insertColumn('Bedrijf', array_fill(0, $numberOfContentRows, '1'));
+$sheet->insertColumn('Medewerker', $employeeNumberRows);
+$sheet->insertColumn('Project', $projectCodes);
+$sheet->insertColumn('Werkcode', $taskCodeRows);
 
 $sheet->removeColumns(array(
 	'Billable?', 'Invoiced?', 'Approved?', 'Employee?', 'Billable Rate',
 	'Billable Amount', 'Cost Rate', 'Cost Amount', 'Currency',
 	'First Name', 'Last Name', 'Project Code', 'Department',
-	'Task'
+	'Task', 'Client', 'Project'
 ));
 
 // Output as CSV.
