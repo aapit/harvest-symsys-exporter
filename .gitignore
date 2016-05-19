@@ -2,3 +2,4 @@ data/*.xls
 data/*.xlsx
 data/*.csv
 composer.lock
+vendor
