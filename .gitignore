@@ -4,3 +4,4 @@ data/*.csv
 composer.lock
 vendor
 .DS_Store
+Harvest Symsys Exporter.app.zip
