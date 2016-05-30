@@ -94,4 +94,4 @@ $sheet->removeColumns(array(
 ));
 
 // Output as CSV.
-$sheet->output(HarvestSheet::OUTPUT_TYPE_CSV);
+$sheet->output(HarvestSheet::OUTPUT_TYPE_CSV, false);

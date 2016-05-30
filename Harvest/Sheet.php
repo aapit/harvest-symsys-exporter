@@ -40,7 +40,7 @@ class HarvestSheet {
 		$this->_initSheet();
 	}
 
-	public function output($type) {
+	public function output($type, $includeHeader = true) {
 		$path = 
 			dirname($this->_path) . DIRECTORY_SEPARATOR
 			. basename($this->_path, '.' . self::INPUT_TYPE_XLSX)
@@ -50,17 +50,22 @@ class HarvestSheet {
 			case self::OUTPUT_TYPE_XLS:
 				$objWriter = new PHPExcel_Writer_Excel5($this->_excelDoc);
 				$extension = '.' . self::OUTPUT_TYPE_XLS;
-				return $objWriter->save($path . $extension);
 			case self::OUTPUT_TYPE_CSV:
 				$objWriter = PHPExcel_IOFactory::createWriter($this->_excelDoc, 'CSV');
-				// Add some rules for Symsys' spartan CSV format
-				$objWriter
-					->setDelimiter(';')
-					->setEnclosure('')
-				;
+				
 				$extension = '.' . self::OUTPUT_TYPE_CSV;
-				return $objWriter->save($path . $extension);
 		}
+
+		// Add some rules for Symsys' spartan CSV format
+		$objWriter
+			->setDelimiter(';')
+			->setEnclosure('')
+		;
+		// Remove header row
+		$this->_getSheet()->removeRow(1, 1);
+
+		return $objWriter->save($path . $extension);
+		
 
 		throw new Exception(self::ERROR_NO_VALID_OUTPUT_TYPE);
 	}
