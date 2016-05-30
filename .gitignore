@@ -3,3 +3,4 @@ data/*.xlsx
 data/*.csv
 composer.lock
 vendor
+.DS_Store
