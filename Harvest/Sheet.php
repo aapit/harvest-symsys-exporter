@@ -53,6 +53,11 @@ class HarvestSheet {
 				return $objWriter->save($path . $extension);
 			case self::OUTPUT_TYPE_CSV:
 				$objWriter = PHPExcel_IOFactory::createWriter($this->_excelDoc, 'CSV');
+				// Add some rules for Symsys' spartan CSV format
+				$objWriter
+					->setDelimiter(';')
+					->setEnclosure('')
+				;
 				$extension = '.' . self::OUTPUT_TYPE_CSV;
 				return $objWriter->save($path . $extension);
 		}
