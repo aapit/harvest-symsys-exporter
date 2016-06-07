@@ -48,7 +48,7 @@
 	<key>OptimizeApplication</key>
 	<true/>
 	<key>Output</key>
-	<string>Text Window</string>
+	<string>Droplet</string>
 	<key>PromptForFileOnLaunch</key>
 	<false/>
 	<key>RemainRunning</key>
