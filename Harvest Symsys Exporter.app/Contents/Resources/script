@@ -21,7 +21,8 @@ $employeeNumberMap = array(
 	117 => 'Clara Dujardin',
 	118 => 'Roos Floris',
 	119 => 'Justine Servais',
-	120 => 'Jean Bohm'
+	120 => 'Jean Bohm',
+    122 => 'Bianca Philip'
 );
 
 $taskCodeMap = array(
