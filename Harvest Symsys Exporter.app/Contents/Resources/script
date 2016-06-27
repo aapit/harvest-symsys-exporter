@@ -39,7 +39,8 @@ $taskCodeMap = array(
 	15 => 'Project management',
 	43 => 'Strategie en Consultancy',
 	95 => 'Testing',
-	96 => 'Tools (proces en workflow)'
+	96 => 'Tools (proces en workflow)',
+    89 => 'Stagiair'
 );
 
 $path = $argv[1];
