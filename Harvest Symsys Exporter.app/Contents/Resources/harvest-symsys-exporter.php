@@ -72,6 +72,8 @@ $sheet->capColumn('Notes', 50);
 // Convert hours to Dutch decimal separator.
 $sheet->replaceColumnString('Hours', '.', ',');
 $sheet->replaceColumnString('Notes', ';', ',');
+$sheet->replaceColumnString('Notes', "\n", ' | ');
+$sheet->replaceColumnString('Notes', "\r", ' | ');
 
 // Now combine the column with a couple of dynamic values.
 /*
