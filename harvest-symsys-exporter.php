@@ -42,7 +42,8 @@ $taskCodeMap = array(
 	43 => 'Strategie en Consultancy',
 	95 => 'Testing',
 	96 => 'Tools (proces en workflow)',
-    89 => 'Stagiair'
+    89 => 'Stagiair',
+    55 => 'Warranty originele scope'
 );
 
 $path = $argv[1];
