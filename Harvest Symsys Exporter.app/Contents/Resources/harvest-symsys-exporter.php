@@ -22,7 +22,8 @@ $employeeNumberMap = array(
 	118 => 'Roos Floris',
 	119 => 'Justine Servais',
 	120 => 'Jean Bohm',
-    122 => 'Bianca Philip'
+    122 => 'Bianca Philip',
+    123 => 'Michele van den Aardweg'
 );
 
 $taskCodeMap = array(
@@ -41,7 +42,8 @@ $taskCodeMap = array(
 	43 => 'Strategie en Consultancy',
 	95 => 'Testing',
 	96 => 'Tools (proces en workflow)',
-    89 => 'Stagiair'
+    89 => 'Stagiair',
+    55 => 'Warranty originele scope'
 );
 
 $path = $argv[1];

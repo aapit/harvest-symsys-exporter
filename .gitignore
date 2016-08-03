@@ -1,6 +1,9 @@
 data/*.xls
 data/*.xlsx
 data/*.csv
+Harvest\ Symsys\ Exporter.app/Contents/Resources/data/*.xls
+Harvest\ Symsys\ Exporter.app/Contents/Resources/data/*.xlsx
+Harvest\ Symsys\ Exporter.app/Contents/Resources/data/*.csv
 composer.lock
 vendor
 .DS_Store
