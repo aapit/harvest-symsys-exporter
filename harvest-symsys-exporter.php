@@ -23,7 +23,7 @@ $employeeNumberMap = array(
 	119 => 'Justine Servais',
 	120 => 'Jean Bohm',
     122 => 'Bianca Philip',
-    123 => 'Michele van den Aardweg'
+    123 => 'Michèle van den Aardweg'
 );
 
 $taskCodeMap = array(
