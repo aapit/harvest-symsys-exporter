@@ -45,7 +45,8 @@ $taskCodeMap = array(
 	96 => 'Tools (proces en workflow)',
     89 => 'Stagiair',
     55 => 'Warranty originele scope',
-    10 => 'HR'
+    10 => 'HR',
+    87 => 'Conferenties'
 );
 
 $path = $argv[1];
