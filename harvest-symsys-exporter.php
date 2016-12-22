@@ -29,25 +29,27 @@ $employeeNumberMap = array(
 );
 
 $taskCodeMap = array(
-	90 => 'Administratief',
-	105 => 'Art direction',
-	100 => 'Concept (FO/TO/COPY)',
-	113 => 'Design interactief',
-	115 => 'Design visueel',
-	112 => 'Development Back end',
-	111 => 'Development Front end',
-	150 => 'DTP',
-	92 => 'Hosting/server/devops',
-	93 => 'Offerte inschatten',
-	94 => 'Planning',
-	15 => 'Project management',
-	43 => 'Strategie en Consultancy',
-	95 => 'Testing',
-	96 => 'Tools (proces en workflow)',
-    89 => 'Stagiair',
-    55 => 'Warranty originele scope',
     10 => 'HR',
-    87 => 'Conferenties'
+    12 => 'Office management / Housekeeping',
+    15 => 'Project manager',
+    43 => 'Strategie / Consultancy',
+    55 => 'Warranty originele scope',
+    87 => 'Education and self improvement',
+    89 => 'Intern',
+    90 => 'Administration',
+    91 => 'Intern and (intern) guidance',
+    94 => 'Planning',
+    96 => 'Process / workflow / tools',
+    101 => 'Black hole',
+    102 => 'Management',
+    103 => 'Travel',
+    104 => 'DevOps Consultant (hosting/server)',
+    105 => 'Art Direction',
+    111 => 'Development Backend / Frontend',
+    113 => 'Interaction Designer/Scrummaster (wireframes/FO/TO)',
+    115 => 'Designer',
+    150 => 'DTP',
+    151 => 'No Role'
 );
 
 $path = $argv[1];
