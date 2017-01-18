@@ -4,55 +4,29 @@ require 'Harvest/Sheet.php';
 require 'Harvest/Transformation.php';
 date_default_timezone_set('Europe/Amsterdam');
 
+const RESOURCE_EMPLOYEE_URL = 'https://docs.google.com/spreadsheets/d/1-SnXuHxVAlO4MYby4PUfOJtZIji6WKKdB2XoaGIrdVE/pub?output=csv';
+const RESOURCE_TASKCODE_URL = 'https://docs.google.com/spreadsheets/d/1-SnXuHxVAlO4MYby4PUfOJtZIji6WKKdB2XoaGIrdVE/pub?gid=1835643858&single=true&output=csv';
 
-$employeeNumberMap = array(
-	100 => 'Mattijs Bliek',
-	102 => 'Jelmer Boomsma',
-	103 => 'Josephine Cambier',
-	105 => 'Rolf Coppens',
-	106 => 'Jeroen Disch',
-	107 => 'Pieter-Jannick Dijkstra',
-	108 => 'Ramiro Hammen',
-	109 => 'Harmen Janssen',
-	110 => 'Larix Kortbeek',
-	111 => 'Koen Schaft',
-	112 => 'Claudia van Schendel',
-	113 => 'David Spreekmeester',
-	117 => 'Clara Dujardin',
-	118 => 'Roos Floris',
-	119 => 'Justine Servais',
-	120 => 'Jean Bohm',
-    122 => 'Bianca Philip',
-    123 => 'Michèle van den Aardweg',
-    124 => 'Robin Tuijnenburg',
-    125 => 'Vincent Wielders (FL)',
-    126 => 'Jim Driesen'
-);
+function getCodeMap($resource) {
+    $csvString = file_get_contents($resource);
 
-$taskCodeMap = array(
-    10 => 'HR',
-    12 => 'Office management / Housekeeping',
-    15 => 'Project manager',
-    43 => 'Strategy / Consultancy',
-    55 => 'Warranty originele scope',
-    87 => 'Education and self improvement',
-    89 => 'Intern',
-    90 => 'Administration',
-    91 => 'Intern and (intern) guidance',
-    94 => 'Planning',
-    96 => 'Process / workflow / tools',
-    99 => 'Marketeer',
-    101 => 'Black Hole',
-    102 => 'Management',
-    103 => 'Travel',
-    104 => 'DevOps Consultant (hosting/server)',
-    105 => 'Art Direction',
-    111 => 'Development',
-    113 => 'Interaction Designer / Scrummaster (wireframes/FO/TO)',
-    115 => 'Designer',
-    150 => 'DTP',
-    151 => 'No Role'
-);
+    $splitColumns = function($row) {
+        return explode(',', $row);
+    };
+
+    $map = array_map($splitColumns, explode("\n", $csvString));
+
+    $output = array();
+
+    foreach ($map as $row) {
+        $output[$row[0]] = $row[1];
+    }
+
+    return $output;
+}
+
+$employeeNumberMap = getCodeMap(RESOURCE_EMPLOYEE_URL);
+$taskCodeMap = getCodeMap(RESOURCE_TASKCODE_URL);
 
 $path = $argv[1];
 $sheet = new HarvestSheet($path);
