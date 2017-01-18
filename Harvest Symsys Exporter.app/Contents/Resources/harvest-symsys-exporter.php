@@ -25,7 +25,8 @@ $employeeNumberMap = array(
     122 => 'Bianca Philip',
     123 => 'Michèle van den Aardweg',
     124 => 'Robin Tuijnenburg',
-    125 => 'Vincent Wielders (FL)'
+    125 => 'Vincent Wielders (FL)',
+    126 => 'Jim Driesen'
 );
 
 $taskCodeMap = array(
@@ -40,6 +41,7 @@ $taskCodeMap = array(
     91 => 'Intern and (intern) guidance',
     94 => 'Planning',
     96 => 'Process / workflow / tools',
+    99 => 'Marketeer',
     101 => 'Black Hole',
     102 => 'Management',
     103 => 'Travel',

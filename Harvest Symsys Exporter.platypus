@@ -34,7 +34,7 @@
 	<key>ExecutablePath</key>
 	<string>/usr/local/share/platypus/ScriptExec</string>
 	<key>IconPath</key>
-	<string>/Users/david/Library/Application Support/Platypus/PlatypusIcon-63465.icns</string>
+	<string>/Users/david/Library/Application Support/Platypus/PlatypusIcon-97058.icns</string>
 	<key>Identifier</key>
 	<string>org.david.HarvestSymsysExporter</string>
 	<key>Interpreter</key>
@@ -260,6 +260,6 @@
 	<key>UseXMLPlistFormat</key>
 	<false/>
 	<key>Version</key>
-	<string>1.0.15</string>
+	<string>1.0.16</string>
 </dict>
 </plist>
