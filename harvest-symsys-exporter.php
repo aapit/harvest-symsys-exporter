@@ -11,6 +11,8 @@ function getCodeMap($resource) {
     $csvString = file_get_contents($resource);
 
     $splitColumns = function($row) {
+        // remove control characters
+        $row = preg_replace('/[\x00-\x1F\x7F]/', '', $row);
         return explode(',', $row);
     };
 
@@ -37,6 +39,7 @@ $projectCodes = $sheet->getColumnValues('Project Code');
 // Find employee numbers by first and last name columns.
 $employeeNames = $sheet->getConcatColumnValues(array('First Name', 'Last Name'), ' ');
 $employeeNumberRows = array();
+
 foreach ($employeeNames as $employeeName) {
 	$employeeNumberRows[] = array_search($employeeName, $employeeNumberMap);
 }
