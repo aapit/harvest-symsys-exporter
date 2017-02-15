@@ -8,7 +8,12 @@ const RESOURCE_EMPLOYEE_URL = 'https://docs.google.com/spreadsheets/d/1-SnXuHxVA
 const RESOURCE_TASKCODE_URL = 'https://docs.google.com/spreadsheets/d/1-SnXuHxVAlO4MYby4PUfOJtZIji6WKKdB2XoaGIrdVE/pub?gid=1835643858&single=true&output=csv';
 
 function getCodeMap($resource) {
-    $csvString = file_get_contents($resource);
+    $cacheBuster = time();
+    $delimiter = strpos($resource, '?') === false
+        ? '?'
+        : '&'
+    ;
+    $csvString = file_get_contents($resource . $delimiter . $cacheBuster);
 
     $splitColumns = function($row) {
         // remove control characters
