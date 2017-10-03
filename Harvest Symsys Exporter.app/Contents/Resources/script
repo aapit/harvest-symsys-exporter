@@ -86,7 +86,7 @@ $sheet->insertColumn('Werkcode', $taskCodeRows);
 $sheet->removeColumns(array(
 	'Billable?', 'Invoiced?', 'Approved?', 'Employee?', 'Billable Rate',
 	'Billable Amount', 'Cost Rate', 'Cost Amount', 'Currency',
-	'First Name', 'Last Name', 'Project Code', 'Department',
+	'First Name', 'Last Name', 'Project Code', 'Department', 'Roles',
 	'Task', 'Client', 'Project'
 ));
 
