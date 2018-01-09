@@ -26,7 +26,7 @@ function getCodeMap($resource) {
     $output = array();
 
     foreach ($map as $row) {
-        $output[$row[0]] = $row[1];
+        $output[$row[0]] = trim($row[1]);
     }
 
     return $output;
@@ -46,7 +46,7 @@ $employeeNames = $sheet->getConcatColumnValues(array('First Name', 'Last Name'),
 $employeeNumberRows = array();
 
 foreach ($employeeNames as $employeeName) {
-	$employeeNumberRows[] = array_search($employeeName, $employeeNumberMap);
+    $employeeNumberRows[] = $employeeNumber = array_search($employeeName, $employeeNumberMap);
 }
 
 // Find work codes by textual Task category
@@ -86,7 +86,7 @@ $sheet->insertColumn('Werkcode', $taskCodeRows);
 $sheet->removeColumns(array(
 	'Billable?', 'Invoiced?', 'Approved?', 'Employee?', 'Billable Rate',
 	'Billable Amount', 'Cost Rate', 'Cost Amount', 'Currency',
-	'First Name', 'Last Name', 'Project Code', 'Department', 'Roles',
+	'First Name', 'Last Name', 'Project Code', 'Roles',
 	'Task', 'Client', 'Project'
 ));
 
